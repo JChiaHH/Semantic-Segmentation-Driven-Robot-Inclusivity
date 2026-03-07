@@ -133,6 +133,24 @@ python scripts/run_pipeline.py torch \
   --device_ids 0
 ```
 
+Example test outputs for the SemanticKITTI-style models:
+
+RandLA-Net training-set inference example:
+
+![RandLA-Net training example](images/Training_RandLANet.png)
+
+RandLA-Net generalization example:
+
+![RandLA-Net generalization example](images/Generalization_RandLAnet.png)
+
+KPConv training-set inference example:
+
+![KPConv training example](images/Training_kpConv.png)
+
+KPConv generalization example:
+
+![KPConv generalization example](images/Generlization_KPConv.png)
+
 ### A5. Predict on a raw unseen sequence
 
 Use `--split predict` for raw unseen SemanticKITTI-style scans that do not have ground-truth `.label` files.
@@ -182,6 +200,7 @@ python "$PROJECT_ROOT/dataset_scripts/export_predicted_ply_FINAL.py"
 ```
 
 Use this after `RandLA-Net` or `KPConv` prediction so you can inspect the result in CloudCompare.
+Open the exported predicted `.ply` file in CloudCompare to review the semantic labels and compare them against the expected scene structure.
 
 ## Option B. Train S3DIS / PointTransformer
 
@@ -237,6 +256,16 @@ cd "$OPEN3D_ML_ROOT"
 tail -f logs/PointTransformer_S3DIS_torch/log_test_*.txt
 ```
 
+Example test outputs for PointTransformer:
+
+PointTransformer training-set inference example:
+
+![PointTransformer training-set inference example](images/TrainingSetInference_PointTransformers.png)
+
+PointTransformer generalization example:
+
+![PointTransformer generalization example](images/Generalization_PointTransformers.png)
+
 ### B4. Prepare raw `.ply` clouds for PointTransformer inference
 
 For raw PointTransformer inference, you must first split the point cloud into S3DIS-style `Area_* / room_*` chunks before running the model.
@@ -283,6 +312,8 @@ python "$PROJECT_ROOT/dataset_scripts/npy_to_ply_s3dis.py" \
   --dataset-path "$S3DIS_DATASET_ROOT" \
   --out-dir /path/to/predicted_ply_merged
 ```
+
+After conversion, open the predicted `.ply` output in CloudCompare to inspect the inference result and verify how well the segmentation generalizes to the target scene.
 
 ### B7. Optional fine-tuning of PointTransformer class weights
 
