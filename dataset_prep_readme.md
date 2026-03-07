@@ -29,7 +29,7 @@ Also note:
 
 - The older notes in `dataset_scripts/README_Final.txt` mention some scripts that are not present in this repository anymore.
 - This README only documents the scripts that are actually present in `dataset_scripts`.
-- The old notes also mention `ply_to_semantic.py`, but that file is not in this repository. If your raw data is still in `.pcd`, convert it to `.ply` first using your own converter before following the steps below.
+- The old notes also mention `ply_to_semantic.py`, but that file is not in this repository. In this project workflow, you can start labeling directly from `.pcd` in CloudCompare, but the final labeled output must still be exported as `.ply` before running the dataset conversion scripts.
 
 ## Stage 1. Label the dataset in CloudCompare
 
@@ -60,18 +60,29 @@ flatpak run org.cloudcompare.CloudCompare
 
 ### Labeling workflow
 
-1. If your source clouds are `.pcd`, convert them to `.ply` first.
-2. Open the `.ply` cloud in CloudCompare.
-3. Create or import the semantic label color scale.
-4. Label the cloud by semantic class.
-5. Save the color scale XML you used for labeling.
-6. Export the labeled cloud as binary `.ply` to save disk space.
+Use the following CloudCompare workflow for semantic labeling:
+
+1. Open your source cloud `.pcd` file in CloudCompare.
+2. Perform your labeling work and save draft CloudCompare project files as `.bin` files while you work.
+3. Create or import the semantic label color scale through `Edit > Color Scales Manager`.
+4. Create groups for the semantic classes by right-clicking in the stage tree on the left panel. Example: `0. Unlabelled`.
+5. Segment the point cloud using the segment tool, rename the segmented portion, and drag it into the correct class group.
+6. After placing segmented objects into their class groups, assign a scalar field to each segmented object through `Edit > Scalar Fields > Add Constant SF`.
+7. After all semantic labels have been assigned as scalar fields, merge all objects inside each class group and place them into a `MergedClasses` group.
+8. Lastly, merge all merged class point clouds into one final merged point cloud and save that final output as a `.ply` mesh file.
+
+Use the project-tree layout in your reference screenshot as the target structure for the CloudCompare project:
+
+- class folders on the left panel
+- a `MergedClasses` folder containing the merged class clouds
+- one final merged point cloud at the end
 
 This repository already includes [`dataset_scripts/color_scale.xml`](dataset_scripts/color_scale.xml), which you can reuse as the base CloudCompare color scale if it matches your label set.
 
 Recommended output from the labeling stage:
 
-- one labeled binary `.ply` file per scene or capture
+- one final labeled `.ply` file per scene or capture
+- draft CloudCompare `.bin` project files
 - a saved CloudCompare XML color scale for the label scheme you used
 
 ## Stage 2. Choose the target dataset format
