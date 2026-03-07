@@ -1,7 +1,9 @@
-# Device Setup README
+# Semantic Segmentation Workflow and Device Setup
 
 This repository uses a conda-based Open3D and Open3D-ML setup.
 No Docker is used in this workflow.
+
+Device setup for Open3D and Open3D-ML can be quite complicated depending on your machine specs, CUDA version, GPU architecture, and driver stack. Expect the initial setup and debugging process to take some time, especially when building Open3D from source or matching CUDA and PyTorch versions.
 
 Once you finish the device setup in this document, continue with [`dataset_prep_readme.md`](dataset_prep_readme.md) for dataset labeling, preprocessing, and training dataset preparation.
 
@@ -26,7 +28,33 @@ For the detailed step-by-step workflow, use these documents after completing the
 - [`dataset_prep_readme.md`](dataset_prep_readme.md)
 - [`ModelTraining_README.md`](ModelTraining_README.md)
 
-## Start here
+## Training Classes
+
+In this workflow, the semantic segmentation models are trained on 16 classes with train IDs `0` to `15`.
+The class colors below are aligned with the project color mapping and the CloudCompare reference scale in [`dataset_scripts/color_scale.xml`](dataset_scripts/color_scale.xml).
+
+Raw CloudCompare labels `2`, `16`, and `18` (`Drains/Canals`, `Debris and Loose Packaging`, and `Unclassified Items`) exist in the full label scale, but they are ignored in the final 16-class training mapping used by this project.
+
+| Train ID | Fixation | Object Class | Colour (RGB) |
+| --- | --- | --- | --- |
+| 0 | Fixed | Unlabelled / Background | `0, 0, 0` |
+| 1 | Fixed | Wall | `255, 170, 255` |
+| 2 | Fixed | Staircase | `249, 241, 0` |
+| 3 | Fixed | Fixed Obstacles | `85, 170, 255` |
+| 4 | Semi-Fixed | Temporary Ramps | `255, 0, 0` |
+| 5 | Semi-Fixed | Safety Barriers and Signs | `142, 106, 36` |
+| 6 | Semi-Fixed | Temporary Utilities | `255, 0, 127` |
+| 7 | Semi-Fixed | Scaffold Structure | `170, 255, 255` |
+| 8 | Semi-Fixed | Semi-Fixed Obstacles | `170, 170, 255` |
+| 9 | Movable | Large Materials | `85, 85, 0` |
+| 10 | Movable | Stored Equipment | `159, 98, 0` |
+| 11 | Movable | Mobile Machines and Vehicles | `104, 104, 56` |
+| 12 | Movable | Movable Objects | `132, 132, 140` |
+| 13 | Portable | Containers and Pallets | `170, 255, 0` |
+| 14 | Portable | Small Tools | `179, 20, 176` |
+| 15 | Portable | Portable Objects | `255, 85, 127` |
+
+## Device Setup
 
 If you are using an `RTX 50xx` series GPU, build Open3D from source first.
 Start with:
