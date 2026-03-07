@@ -82,6 +82,22 @@ If you are using other GPUs, and especially if you are on Ubuntu `24.04` or belo
 - Open3D-ML repo path: `/home/jeremychia/Documents/Open3D-ML`
 - Main pipeline script: `/home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py`
 
+### Tested machine specs
+
+Open3D and Open3D-ML in this workflow were tried and tested on the following machine:
+
+- OS: `Ubuntu 24.04.3 LTS` (`64-bit`)
+- Hardware model: `Gigabyte Technology Co., Ltd. X870 EAGLE WIFI7`
+- CPU: `AMD Ryzen 9 9950X3D` (`32 threads`)
+- Memory: `64.0 GiB`
+- GPU: `NVIDIA GeForce RTX 5090`
+- Secondary graphics: `Advanced Micro Devices, Inc. [AMD/ATI]`
+- Disk capacity: `6.1 TB`
+- GNOME version: `46`
+- Windowing system: `X11`
+- Kernel: `Linux 6.17.0-14-generic`
+- Firmware version: `F7b KV`
+
 ## Current Open3D build flags
 
 The installed Open3D package reports these build settings:
