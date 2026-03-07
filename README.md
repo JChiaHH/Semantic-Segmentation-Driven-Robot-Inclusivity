@@ -10,7 +10,7 @@ Once you finish the device setup in this document, continue with [`dataset_prep_
 The overall workflow in this project is shown below.
 It starts with dataset preparation, moves into model selection and training validation, and then loops through raw-data inference and fine-tuning until the model performs well on both labeled and unseen point clouds.
 
-![Semantic model training pipeline](images/Semantic%20Model%20Training%20Pipeline.drawio.png)
+![Semantic model training pipeline](images/Semantic%20Model%20Training%20Pipeline.png)
 
 In brief, the pipeline is:
 
