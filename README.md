@@ -412,3 +412,8 @@ python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
 - NVIDIA CUDA GPU compute capability table: https://developer.nvidia.com/cuda-gpus
 - Open3D build from source documentation: https://www.open3d.org/docs/release/compilation.html
 - Open3D-ML installation notes: https://github.com/isl-org/Open3D-ML#installation
+
+## Next Step
+
+After you finish the device setup in this README, continue with [`dataset_prep_readme.md`](dataset_prep_readme.md) to prepare the dataset for training.
+
