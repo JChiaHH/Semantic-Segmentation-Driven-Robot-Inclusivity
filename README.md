@@ -78,9 +78,9 @@ If you are using other GPUs, and especially if you are on Ubuntu `24.04` or belo
 - PyTorch: `2.7.1+cu128`
 - PyTorch CUDA runtime: `12.8`
 - PyTorch C++ ABI: `True`
-- Open3D package path: `/home/jeremychia/miniconda3/envs/o3dml_cuda128/lib/python3.10/site-packages/open3d`
-- Open3D-ML repo path: `/home/jeremychia/Documents/Open3D-ML`
-- Main pipeline script: `/home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py`
+- Open3D package path: `<CONDA_ENV_PATH>/lib/python3.10/site-packages/open3d`
+- Open3D-ML repo path: `<OPEN3D_ML_ROOT>`
+- Main pipeline script: `<OPEN3D_ML_ROOT>/scripts/run_pipeline.py`
 
 ### Tested machine specs
 
@@ -144,7 +144,8 @@ conda create -n o3dml_cuda128 python=3.10 -y
 conda activate o3dml_cuda128
 
 python -m pip install --upgrade pip setuptools wheel cmake
-python -m pip install -r /home/jeremychia/Documents/Open3D-ML/requirements-torch-cuda.txt
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+python -m pip install -r "$OPEN3D_ML_ROOT/requirements-torch-cuda.txt"
 ```
 
 That installs:
@@ -222,8 +223,8 @@ If the same wheel needs to run on both GPU classes, use:
 
 For this workflow, Open3D-ML code is used from:
 
-- `/home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py`
-- `/home/jeremychia/Documents/Open3D-ML/ml3d/configs`
+- `<OPEN3D_ML_ROOT>/scripts/run_pipeline.py`
+- `<OPEN3D_ML_ROOT>/ml3d/configs`
 
 Open3D already bundles the ML namespace because `BUNDLE_OPEN3D_ML=ON`, so the main requirement is that the Open3D package is built correctly for PyTorch `2.7.1+cu128`.
 
@@ -231,7 +232,8 @@ Optional editable install of the standalone Open3D-ML repo:
 
 ```bash
 conda activate o3dml_cuda128
-cd /home/jeremychia/Documents/Open3D-ML
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+cd "$OPEN3D_ML_ROOT"
 python -m pip install -e .
 ```
 
@@ -384,8 +386,10 @@ After restoring them, rerun the verification commands in this README.
 ```bash
 conda activate o3dml_cuda128
 
-python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
-  -c /home/jeremychia/Documents/Open3D-ML/ml3d/configs/modified/kpconv_semantickitti.yml \
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+
+python "$OPEN3D_ML_ROOT/scripts/run_pipeline.py" torch \
+  -c "$OPEN3D_ML_ROOT/ml3d/configs/kpconv_semantickitti.yml" \
   --device cuda \
   --device_ids 0 \
   --split train
@@ -396,8 +400,10 @@ python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
 ```bash
 conda activate o3dml_cuda128
 
-python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
-  -c /home/jeremychia/Documents/Open3D-ML/ml3d/configs/modified/kpconv_semantickitti.yml \
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+
+python "$OPEN3D_ML_ROOT/scripts/run_pipeline.py" torch \
+  -c "$OPEN3D_ML_ROOT/ml3d/configs/kpconv_semantickitti.yml" \
   --device cuda \
   --device_ids 0 \
   --split predict \
@@ -408,9 +414,9 @@ python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
 
 ## 7. Config assumptions in the current pipeline
 
-The modified config file at `/home/jeremychia/Documents/Open3D-ML/ml3d/configs/modified/kpconv_semantickitti.yml` already contains:
+The modified config file at `<OPEN3D_ML_ROOT>/ml3d/configs/kpconv_semantickitti.yml` already contains:
 
-- `dataset.dataset_path: /home/jeremychia/Documents/Point_clouds/Training/dataset`
+- `dataset.dataset_path: <SEMKITTI_DATASET_ROOT>`
 - `learning_map_inv`, which is required by the custom `predict` flow
 - `model.name: KPFCNN`
 - `pipeline.name: SemanticSegmentation`
@@ -418,8 +424,10 @@ The modified config file at `/home/jeremychia/Documents/Open3D-ML/ml3d/configs/m
 If the dataset location changes, override it from CLI:
 
 ```bash
-python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
-  -c /home/jeremychia/Documents/Open3D-ML/ml3d/configs/modified/kpconv_semantickitti.yml \
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+
+python "$OPEN3D_ML_ROOT/scripts/run_pipeline.py" torch \
+  -c "$OPEN3D_ML_ROOT/ml3d/configs/kpconv_semantickitti.yml" \
   --dataset.dataset_path /path/to/dataset
 ```
 
