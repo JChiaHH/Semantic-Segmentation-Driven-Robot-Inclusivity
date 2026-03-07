@@ -1,0 +1,364 @@
+dataset:
+  name: SemanticKITTI
+  dataset_path: /home/jeremychia/Documents/Point_clouds/Training/dataset
+  
+  semantic_kitti_yaml: /home/jeremychia/miniconda3/envs/o3dml_cuda128/lib/python3.10/site-packages/open3d/_ml3d/datasets/_resources/semantic-kitti.yaml
+
+  # train/val/test splits
+  training_split: ["00", "oversampled1"]
+  validation_split: ['val']        # or ['08'] if that's your val seq
+  test_split: ['testfullpcd']
+
+  use_cache: true
+  # class_weights: [0.1, 0.242354, 0.97445, 0.671381, 0.484172,
+  #                 1.603895, 0.328541, 0.637951, 1.842605,
+  #                 0.477367, 2.489814, 1.24747]  #ONLY 12 CLASSES 
+
+  #Dataset02 has 13 classes
+  #class_weights: [0.0, 0.203384, 0.817761, 0.563424, 0.406318, 1.345992, 0.275713, 0.53537, 1.546318, 0.400608, 2.089458, 1.04688, 2.768773]
+  #class_weights: [0.1, 0.170829, 1.150168, 0.341278, 0.205587, 0.976971, 0.221331, 0.57949, 1.566066, 0.264996, 2.678164, 1.516073, 2.329047]
+  #class_weights: [0.1, 0.146658, 1.356803, 0.301878, 0.24341, 1.066105, 0.183992, 0.462089, 1.902646, 0.342589, 1.870932, 0.647552, 3.449844, 1.025502]
+
+  #dataset06
+  #class_weights: [0.1, 0.236426, 0.99427, 0.698224, 1.124257, 0.522283, 0.608506, 0.345057, 3.736779, 0.472467, 0.454161, 0.652152, 0.986067, 0.744365, 2.743673, 0.681315] #till oversampled2
+  #class_weights: [0.1, 0.222611, 1.125372, 1.072953, 1.250184, 0.783461, 0.921856, 0.429511, 3.077254, 0.53697, 0.667931, 0.937433, 0.578267, 1.032914, 1.804559, 0.558723] #till ovversampled6
+  #class_weights: [0.1, 0.229814, 0.914584, 0.871245, 1.015158, 0.636477, 0.748553, 0.372065, 3.996789, 0.454087, 0.543835, 0.761202, 0.469557, 0.85277, 2.477801, 0.656062] #oversampled3
+  #class_weights: [0.1, 0.236426, 0.99427, 0.698224, 1.124257, 0.522283, 0.608506, 0.345057, 3.736779, 0.472467, 0.454161, 0.652152, 0.986067, 0.744365, 2.743673, 0.681315] #oversampled2_d2
+
+  #dataset07
+  #class_weights: [0.1, 0.139441, 1.196949, 0.261943, 1.25948, 0.156015, 0.634153, 0.125835, 3.63103, 0.318711, 0.374995, 0.218489, 0.530461, 0.780725, 4.624987, 0.746788]
+  #class_weights: [0.1, 0.251328, 0.987099, 0.650229, 1.115207, 0.440853, 0.588699, 0.324482, 3.568385, 0.540291, 0.47079, 0.642525, 1.15697, 0.7938, 2.77456, 0.694782]
+
+  #dataset08
+  #class_weights: [0.1, 0.319642, 0.833143, 0.758271, 1.13349, 0.414927, 0.70271, 0.347189, 1.944231, 0.590783, 0.864974, 0.661671, 0.933009, 2.274629, 2.530313, 0.691019]
+
+  #dataset09
+  class_weights: [0.1, 0.293543, 1.247878, 0.655912, 1.346179, 0.403322, 0.595823, 0.386983, 2.980272, 0.591539, 0.843252, 0.669077, 1.124372, 0.597593, 2.663001, 0.601255]
+
+
+# labels:
+#   0: unlabeled
+#   1: Wall
+#   2: Drains/Canals
+#   3: Staircase
+#   4: Fixed Obstacles
+#   5: Temporary Ramps
+#   6: Safety Barriers & Signs
+#   7: Temporary Utilities
+#   8: Scaffold Structure
+#   9: Semi-Fixed Obstacles
+#   10: Large Materials
+#   11: Stored Equipment
+#   12: Mobile Machines & Vehicles
+#   13: Movable Objects
+#   14: Containers & Pallets
+#   15: Small Tools
+#   16: Debris & Loose Packaging
+#   17: Portable Objects
+#   #18: Unclassified Items
+
+labels:
+  0: unlabeled
+  1: Wall
+  2: Staircase
+  3: Fixed Obstacles
+  4: Temporary Ramps
+  5: Safety Barriers & Signs
+  6: Temporary Utilities
+  7: Scaffold Structure
+  8: Semi-Fixed Obstacles
+  9: Large Materials
+  10: Stored Equipment
+  11: Mobile Machines & Vehicles
+  12: Movable Objects
+  13: Containers & Pallets
+  14: Small Tools
+  15: Portable Objects
+
+
+
+# learning_ignore:
+#   0: true
+#   2: true
+#   3: true
+#   5: true
+#   9: true
+#   15: true
+#   16: true
+
+#Jeremy: taken from semantic-kitt.yml in teams pointcloud_dataset jeremy_ws
+# color_map:
+#   0:  [0, 0, 0]            # Unlabelled — Black
+#   1:  [255, 170, 255]      # Wall — Light Pink/Purple
+#   #2:  [0, 239, 80]         # Drains/Canals — Neon Green
+#   3:  [249, 241, 0]        # Staircase — Yellow
+#   4:  [85, 170, 255]       # Fixed_Obstacles — Sky Blue
+#   5:  [255, 0, 0]          # Temporary_Ramps — Red
+#   6:  [142, 106, 36]       # Safety_Barriers_And_Signs — Brown
+#   7:  [255, 0, 127]        # Temporary_Utilities — Hot Pink
+#   8:  [170, 255, 255]      # Scaffold_Structure — Aqua
+#   9:  [170, 170, 255]      # Semi-Fixed_Obstacles — Lavender
+#   10: [85, 85, 0]          # Large_Materials — Olive
+#   11: [159, 98, 0]         # Stored_Equipment — Orange-Brown
+#   12: [104, 104, 56]       # Mobile_Machines_And_Vehicles — Earth Green/Brown
+#   13: [132, 132, 140]      # Movable_Objects — Gray
+#   14: [170, 255, 0]        # Containers_And_Pallets — Lime Green
+#   15: [179, 20, 176]       # Small_Tools — Purple Magenta
+#   #16: [0, 170, 255]        # Debris_And_Loose_Packaging — Cyan Blue
+#   17: [255, 85, 127]       # Portable_Objects — Pink Red
+#   #18: [206, 184, 199]      # Unclassified_Items — Light Gray/Pink
+
+color_map:
+  0:  [0, 0, 0]
+  1:  [255, 170, 255]
+  2:  [249, 241, 0]
+  3:  [85, 170, 255]
+  4:  [255, 0, 0]
+  5:  [142, 106, 36]
+  6:  [255, 0, 127]
+  7:  [170, 255, 255]
+  8:  [170, 170, 255]
+  9:  [85, 85, 0]
+  10: [159, 98, 0]
+  11: [104, 104, 56]
+  12: [132, 132, 140]
+  13: [170, 255, 0]
+  14: [179, 20, 176]
+  15: [255, 85, 127]
+
+
+#Jeremy: i try to keep ignored classes seperate from bg see how it goes
+
+# learning_map:
+#   0: 0   # Unlabelled / background
+#   1: 1    # Wall
+#   3: 2    # Staircase   <<< newly added class
+#   4: 3    # Fixed_Obstacles
+#   6: 4    # Safety_Barriers_And_Signs
+#   7: 5    # Temporary_Utilities
+#   8: 6    # Scaffold_Structure
+#   10: 7   # Large_Materials
+#   11: 8   # Stored_Equipment
+#   12: 9   # Mobile_Machines_And_Vehicles
+#   13: 10  # Movable_Objects
+#   14: 11  # Containers_And_Pallets
+#   15: 13 # Small_tools
+#   17: 12  # Portable_Objects
+
+#   # Everything else → background
+#   # 2: 255    # Drains/Canals
+#   # 5: 255    # Temporary_Ramps
+#   # 9: 255    # Semi-Fixed_Obstacles
+#   # 15: 255   # Small_Tools
+#   # 16: 255   # Debris_And_Loose_Packaging
+#   # 18: 255   # Unclassified_Items
+#   # 255: 255  # ignore / unlabeled
+
+# learning_map_inv:
+#   0: 0     # background
+#   1: 1     # Wall
+#   2: 3     # Staircase
+#   3: 4     # Fixed_Obstacles
+#   4: 6     # Safety_Barriers_And_Signs
+#   5: 7     # Temporary_Utilities
+#   6: 8     # Scaffold_Structure
+#   7: 10    # Large_Materials
+#   8: 11    # Stored_Equipment
+#   9: 12    # Mobile_Machines_And_Vehicles
+#   10: 13   # Movable_Objects
+#   11: 14   # Containers_And_Pallets
+#   12: 15 #small tools
+#   13: 17   # Portable_Objects
+
+# dataset05 (amended)
+# learning_map:
+#   0: 0    # Unlabelled / background
+#   1: 1    # Wall
+#   3: 2    # Staircase
+#   4: 3    # Fixed_Obstacles
+#   6: 4    # Safety_Barriers_And_Signs
+#   7: 5    # Temporary_Utilities
+#   8: 6    # Scaffold_Structure
+#   10: 7   # Large_Materials
+#   11: 8   # Stored_Equipment
+#   12: 9   # Mobile_Machines_And_Vehicles
+#   13: 10  # Movable_Objects
+#   14: 11  # Containers_And_Pallets
+#   15: 12  # Small_Tools
+#   17: 13  # Portable_Objects
+
+#   5: 14   # Temporary_Ramps              (NEW train class)
+#   9: 15   # Semi-Fixed_Obstacles         (NEW train class)
+
+#   # Everything else → ignore (not used for training)
+#   2: 255
+#   16: 255
+#   18: 255
+#   255: 255
+
+# learning_map_inv:
+#   0: 0    # background
+#   1: 1    # Wall
+#   2: 3    # Staircase
+#   3: 4    # Fixed_Obstacles
+#   4: 6    # Safety_Barriers_And_Signs
+#   5: 7    # Temporary_Utilities
+#   6: 8    # Scaffold_Structure
+#   7: 10   # Large_Materials
+#   8: 11   # Stored_Equipment
+#   9: 12   # Mobile_Machines_And_Vehicles
+#   10: 13  # Movable_Objects
+#   11: 14  # Containers_And_Pallets
+#   12: 15  # Small_Tools
+#   13: 17  # Portable_Objects
+
+#   14: 5   # Temporary_Ramps              (NEW)
+#   15: 9   # Semi-Fixed_Obstacles         (NEW)
+
+#dataset06
+learning_map:
+  0: 0     # Unlabelled / background
+  1: 1     # Wall
+  3: 2     # Staircase
+  4: 3     # Fixed_Obstacles
+
+  5: 4     # Temporary_Ramps
+  6: 5     # Safety_Barriers_And_Signs
+  7: 6     # Temporary_Utilities
+  8: 7     # Scaffold_Structure
+
+  9: 8     # Semi-Fixed_Obstacles
+  10: 9    # Large_Materials
+  11: 10   # Stored_Equipment
+  12: 11   # Mobile_Machines_And_Vehicles
+  13: 12   # Movable_Objects
+  14: 13   # Containers_And_Pallets
+  15: 14   # Small_Tools
+  17: 15   # Portable_Objects
+
+  # Everything else → ignore (not used for training)
+  2: 255
+  16: 255
+  18: 255
+  255: 255
+
+
+learning_map_inv:
+  0: 0     # background
+  1: 1     # Wall
+  2: 3     # Staircase
+  3: 4     # Fixed_Obstacles
+
+  4: 5     # Temporary_Ramps
+  5: 6     # Safety_Barriers_And_Signs
+  6: 7     # Temporary_Utilities
+  7: 8     # Scaffold_Structure
+
+  8: 9     # Semi-Fixed_Obstacles
+  9: 10    # Large_Materials
+  10: 11   # Stored_Equipment
+  11: 12   # Mobile_Machines_And_Vehicles
+  12: 13   # Movable_Objects
+  13: 14   # Containers_And_Pallets
+  14: 15   # Small_Tools
+  15: 17   # Portable_Objects
+
+
+
+model:
+  name: KPFCNN
+  ckpt_path:     # leave empty for training from scratch, or set later
+
+  # --- ARCHITECTURE (from your original KPConv cfg) ---
+  KP_extent: 1.2
+  KP_influence: linear
+  aggregation_mode: sum
+  architecture:
+    - simple
+    - resnetb
+    - resnetb_strided
+    - resnetb
+    - resnetb
+    - resnetb_strided
+    - resnetb
+    - resnetb
+    - resnetb_strided
+    - resnetb
+    - resnetb
+    - resnetb_strided
+    - resnetb
+    - nearest_upsample
+    - unary
+    - nearest_upsample
+    - unary
+    - nearest_upsample
+    - unary
+    - nearest_upsample
+    - unary
+
+  # --- DATA / LABEL SPACE (UPDATED) ---
+   #  train IDs Jeremy: match this learning_map_inv (semantic-kitt.yml)
+  #lbl_values: [0, 1,2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12, 13] 
+  lbl_values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  num_classes: 16 # do not include ignored_label_class in count.          #Jeremy: matches learning_map_inv
+  # i am assuming they are ignoring raw label IDs # Jeremy: this to learning_map inv NOT raw label ID
+  ignored_label_inds: []
+
+  # --- AUGMENTATION ---
+  augment_color: 0.8
+  augment_noise: 0.001
+  augment_rotation: vertical
+  augment_scale_anisotropic: false #true
+  augment_scale_max: 1.1
+  augment_scale_min: 0.9
+  augment_symmetries: [true, false, false]
+
+  # --- GEOMETRY / SAMPLING HYPERS ---
+  batch_limit: 100000 #120000 # originally 50000
+  batch_norm_momentum: 0.98 # originally 0.98
+  batcher: ConcatBatcher
+  conv_radius: 2.5
+  deform_fitting_mode: point2point
+  deform_fitting_power: 1.0
+  deform_radius: 6.0
+  density_parameter: 5.0
+  first_features_dim: 128
+  first_subsampling_dl: 0.06
+  fixed_kernel_points: center
+  in_features_dim: 2           # keep, unless your dataset uses more features
+  in_points_dim: 3
+  min_in_points: 5000 #10000
+  max_in_points: 40000 #60000 # originally 20000
+  modulated: false
+  num_kernel_points: 15
+  num_layers: 5
+  in_radius: 3.0 #4.0
+  repulse_extent: 1.2
+  use_batch_norm: true
+
+pipeline:
+  name: SemanticSegmentation
+  pin_memory: False #NEW 
+  batch_size: 4
+  test_batch_size: 1
+  val_batch_size: 1
+  num_workers: 0
+
+  adam_lr: 0.001
+  learning_rate: 0.001
+  scheduler_gamma: 0.98477
+  #lr_decays: 0.98477
+  momentum: 0.98
+  deform_lr_factor: 0.1
+  weight_decay: 0.0005 #0.001
+
+  max_epoch: 600
+  save_ckpt_freq: 3
+  main_log_dir: ./logs
+  train_sum_dir: train_log
+
+  summary:
+    record_for: []
+    max_pts:
+    use_reference: false
+    max_outputs: 1

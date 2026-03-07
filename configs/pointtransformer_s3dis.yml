@@ -1,0 +1,177 @@
+dataset:
+  name: S3DIS
+  dataset_path: # /home/jeremychia/Documents/Point_clouds/Training/dataset_s3dis/Stanford3dDataset_v1.2_Aligned_Version
+  cache_dir: ./logs/cache
+  
+  # Class weights from compute_weights script (raw point counts)
+  #class_weights: [24676060, 4256900, 290722, 905927, 26787, 1818696, 116978, 3310766, 6958, 552498, 362046, 1208589, 321792, 95413, 2559, 116988]
+  
+
+  #Base weights
+  #class_weights: [26598082, 5111208, 306272, 1009824, 26787, 2344866, 709755, 3683560, 39081, 791902, 577550, 1272998, 334793, 432515, 17778, 431268] #first run
+  #Fine tune 1 : --ce-mult "12:0.85,1:1.08,4:1.03,0:0.95"
+  class_weights: [26236438, 3833507, 442313, 1090158, 70962, 2288704, 815663, 3465061, 191628, 891048, 693924, 1329089, 1049950, 559728, 171495, 558571]
+  
+  # Fine Tune 2 (failed): --ce-mult "0:1.03,1:1.05,7:0.97"
+  #class_weights: [25969672, 3683512, 451401, 1112557, 72420, 2335730, 832422, 3673205, 195565, 909356, 708182, 1356398, 1071523, 571229, 175019, 570048]
+  # Fine Tune 2.1 (failed) : 
+  #class_weights: [26290576, 3616798, 443226, 1092408, 71108, 2293427, 817346, 3606679, 192023, 892887, 695356, 1331832, 1052117, 560883, 171849, 559724]
+  #Fine Tune 2.2:
+  #class_weights: [26238107, 3787140, 442341, 1090227, 70967, 2288850, 815715, 3509111, 191640, 891105, 693968, 1329174, 1050017, 559764, 171506, 558607]
+
+  #Fine Tune 2.3 (Failed): --ce-mult "11:0.98,7:0.98,10:1.04" from chkt point 185
+  #class_weights: [26193675, 3780726, 441592, 1088381, 70847, 2284974, 814334, 3592464, 191315, 889596, 632598, 1371805, 1048239, 558816, 171216, 557661]
+
+  #Fine Tune 2.4 (Failed): -ce-power 1.0 -ce-mult "11:0.995,7:0.995,10:1.02"
+  #class_weights: [26191161, 3780362, 441550, 1088277, 70840, 2284755, 814256, 3614561, 191297, 889511, 603004, 1382957, 1048138, 558762, 171200, 557608]
+
+  #Fine Tune 2.5: -- ce-power 0.95    --ce-mult "11:0.995,7:0.995,10:1.02"
+  class_weights: [23883597, 3897446, 616560, 1260898, 240324, 2426797, 989437, 3570970, 363273, 1064194, 836112, 1507050, 1221259, 734335, 342810, 733177]
+
+
+  ignored_label_inds: []
+  num_points: 40960
+  
+  # IMPORTANT: Your spatial_grid_splitting creates Area_1 (train) and Area_val (val)
+  # Option A: Rename Area_val → Area_5 and use test_area_idx: 5
+  # Option B: If Open3D-ML supports string, use: test_area_idx: val
+  test_area_idx: 2  # Assumes you renamed Area_val to Area_5
+  
+  test_result_folder: ./test
+  use_cache: false
+
+# Labels (training IDs → human-readable names)
+# Must match LABEL_TO_CLASS in spatial_grid_splitting_s3dis.py
+labels:
+  0: Unlabelled
+  1: Wall
+  2: Staircase
+  3: Fixed_Obstacles
+  4: Temporary_Ramps
+  5: Safety_Barriers_And_Signs
+  6: Temporary_Utilities
+  7: Scaffold_Structure
+  8: Semi_Fixed_Obstacles
+  9: Large_Materials
+  10: Stored_Equipment
+  11: Mobile_Machines_And_Vehicles
+  12: Movable_Objects
+  13: Containers_And_Pallets
+  14: Small_Tools
+  15: Portable_Objects
+
+# Color map for visualization (same as KPConv)
+color_map:
+  0:  [0, 0, 0]            # Unlabelled — Black
+  1:  [255, 170, 255]      # Wall
+  2:  [249, 241, 0]        # Staircase
+  3:  [85, 170, 255]       # Fixed_Obstacles
+  4:  [255, 0, 0]          # Temporary_Ramps
+  5:  [142, 106, 36]       # Safety_Barriers_And_Signs
+  6:  [255, 0, 127]        # Temporary_Utilities
+  7:  [170, 255, 255]      # Scaffold_Structure
+  8:  [170, 170, 255]      # Semi_Fixed_Obstacles
+  9:  [85, 85, 0]          # Large_Materials
+  10: [159, 98, 0]         # Stored_Equipment
+  11: [104, 104, 56]       # Mobile_Machines_And_Vehicles
+  12: [132, 132, 140]      # Movable_Objects
+  13: [170, 255, 0]        # Containers_And_Pallets
+  14: [179, 20, 176]       # Small_Tools
+  15: [255, 85, 127]       # Portable_Objects
+
+# Learning map (raw label → training ID)
+# Same as spatial_grid_splitting_s3dis.py
+learning_map:
+  0: 0     # Unlabelled / background
+  1: 1     # Wall
+  3: 2     # Staircase
+  4: 3     # Fixed_Obstacles
+  5: 4     # Temporary_Ramps
+  6: 5     # Safety_Barriers_And_Signs
+  7: 6     # Temporary_Utilities
+  8: 7     # Scaffold_Structure
+  9: 8     # Semi_Fixed_Obstacles
+  10: 9    # Large_Materials
+  11: 10   # Stored_Equipment
+  12: 11   # Mobile_Machines_And_Vehicles
+  13: 12   # Movable_Objects
+  14: 13   # Containers_And_Pallets
+  15: 14   # Small_Tools
+  17: 15   # Portable_Objects
+  # Ignored
+  2: 255
+  16: 255
+  18: 255
+  255: 255
+
+learning_map_inv:
+  0: 0     # Unlabelled
+  1: 1     # Wall
+  2: 3     # Staircase
+  3: 4     # Fixed_Obstacles
+  4: 5     # Temporary_Ramps
+  5: 6     # Safety_Barriers_And_Signs
+  6: 7     # Temporary_Utilities
+  7: 8     # Scaffold_Structure
+  8: 9     # Semi_Fixed_Obstacles
+  9: 10    # Large_Materials
+  10: 11   # Stored_Equipment
+  11: 12   # Mobile_Machines_And_Vehicles
+  12: 13   # Movable_Objects
+  13: 14   # Containers_And_Pallets
+  14: 15   # Small_Tools
+  15: 17   # Portable_Objects
+
+model:
+  name: PointTransformer
+  batcher: ConcatBatcher
+  ckpt_path: # path/to/your/checkpoint
+  in_channels: 6
+  blocks: [2, 3, 4, 6, 3]
+  num_classes: 16
+  voxel_size: 0.04
+  max_voxels: 50000
+  ignored_label_inds: []  # Made consistent with dataset
+  augment:
+    recenter:
+      dim: [0,1,2]
+    rotate:
+      method: vertical
+    scale:
+      min_s: 0.95
+      max_s: 1.05
+    noise:
+      noise_std: 0.005
+    # ChromaticAutoContrast:
+    #   randomize_blend_factor: True
+    #   blend_factor: 0.2
+    # ChromaticTranslation:
+    #   trans_range_ratio: 0.05
+    # ChromaticJitter:
+    #   std: 0.01
+    # HueSaturationTranslation:
+    #   hue_max: 0.5
+    #   saturation_max: 0.2
+
+pipeline:
+  name: SemanticSegmentation
+  optimizer:
+    lr: 0.00001 #0.003 #0.02
+    momentum: 0.9
+    weight_decay: 0.0001
+  batch_size: 3
+  learning_rate: 0.00001 #0.01
+  main_log_dir: ./logs
+  max_epoch: 250
+  save_ckpt_freq: 1
+  scheduler_gamma: 0.99
+  test_batch_size: 1
+  train_sum_dir: /home/jeremychia/Documents/Open3D-ML/train_log_ft185
+  val_batch_size: 3
+  pin_memory: False  # Added from KPConv config
+  num_workers: 0     # Added from KPConv config
+  summary:
+    record_for: []
+    max_pts:
+    use_reference: false
+    max_outputs: 1

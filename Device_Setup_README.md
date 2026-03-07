@@ -1,4 +1,4 @@
-# Semantic Segmentation Driven Robot Inclusivity
+# Device Setup README
 
 This repository uses a conda-based Open3D and Open3D-ML setup.
 No Docker is used in this workflow.
@@ -178,7 +178,81 @@ python -m pip install -e .
 
 This editable install is optional for the current pipeline because `run_pipeline.py` imports `open3d.ml`.
 
-## 4. Verify the installation
+## 4. Apply the project-specific script and config patches
+
+After Open3D and Open3D-ML are installed, copy this repository's modified files into the active Open3D / Open3D-ML locations.
+
+These patches are required because they contain project-specific changes to:
+
+- `learning_map` and `learning_map_inv`
+- `label_to_names`
+- dataset preprocessing and dataset loading behavior
+- prediction flow in `run_pipeline.py`
+- semantic label definitions used by the training configs
+
+### Copy into the Open3D-ML repo
+
+```bash
+conda activate o3dml_cuda128
+
+PROJECT_ROOT=/path/to/Semantic-Segmentation-Driven-Robot-Inclusivity--Evaluating-Construction-Site-Accessibility-from-3D-Point-Clouds
+OPEN3D_ML_ROOT=/path/to/Open3D-ML
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/run_pipeline.py" \
+   "$OPEN3D_ML_ROOT/scripts/run_pipeline.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantic_segmentation.py" \
+   "$OPEN3D_ML_ROOT/ml3d/torch/pipelines/semantic_segmentation.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.py" \
+   "$OPEN3D_ML_ROOT/ml3d/datasets/semantickitti.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/s3dis.py" \
+   "$OPEN3D_ML_ROOT/ml3d/datasets/s3dis.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.yml" \
+   "$OPEN3D_ML_ROOT/ml3d/datasets/_resources/semantic-kitti.yaml"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.yml" \
+   "$OPEN3D_ML_ROOT/ml3d/datasets/utils/semantic-kitti.yaml"
+
+cp "$PROJECT_ROOT/configs/"*.yml \
+   "$OPEN3D_ML_ROOT/ml3d/configs/"
+```
+
+### Copy into the installed Open3D package
+
+`run_pipeline.py` imports `open3d.ml`, so the active site-packages copy of Open3D also needs the same dataset and pipeline replacements.
+
+```bash
+conda activate o3dml_cuda128
+
+PROJECT_ROOT=/path/to/Semantic-Segmentation-Driven-Robot-Inclusivity--Evaluating-Construction-Site-Accessibility-from-3D-Point-Clouds
+
+O3D_SITE=$(python - <<'PY'
+import pathlib
+import open3d as o3d
+print(pathlib.Path(o3d.__file__).resolve().parent)
+PY
+)
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantic_segmentation.py" \
+   "$O3D_SITE/_ml3d/torch/pipelines/semantic_segmentation.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.py" \
+   "$O3D_SITE/_ml3d/datasets/semantickitti.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/s3dis.py" \
+   "$O3D_SITE/_ml3d/datasets/s3dis.py"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.yml" \
+   "$O3D_SITE/_ml3d/datasets/_resources/semantic-kitti.yaml"
+
+cp "$PROJECT_ROOT/open3d_modified_scripts/semantickitti.yml" \
+   "$O3D_SITE/_ml3d/datasets/utils/semantic-kitti.yaml"
+```
+
+## 5. Verify the installation
 
 ```bash
 conda activate o3dml_cuda128
@@ -244,7 +318,7 @@ https://drive.google.com/drive/folders/1YZJJGOH4c8iePaBs3cjnRpVS7UWqKNCG?usp=sha
 Use the downloaded files to restore the installed Open3D package's `cpu/` and `cuda/` directories.
 After restoring them, rerun the verification commands in this README.
 
-## 5. Run Open3D-ML
+## 6. Run Open3D-ML
 
 ### Training
 
@@ -273,7 +347,7 @@ python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
   --pred_out /path/to/output
 ```
 
-## 6. Config assumptions in the current pipeline
+## 7. Config assumptions in the current pipeline
 
 The modified config file at `/home/jeremychia/Documents/Open3D-ML/ml3d/configs/modified/kpconv_semantickitti.yml` already contains:
 
@@ -290,7 +364,7 @@ python /home/jeremychia/Documents/Open3D-ML/scripts/run_pipeline.py torch \
   --dataset.dataset_path /path/to/dataset
 ```
 
-## 7. Troubleshooting
+## 8. Troubleshooting
 
 - If `import open3d` fails with `undefined symbol: ZSTD_decompressStream`, the Open3D install in the conda environment is broken. Rebuild and reinstall the wheel inside the active conda environment instead of copying package files manually.
 - If `import open3d` fails during GUI import, the installed wheel is incomplete or mismatched. Rebuild the wheel in the same environment where it will be used.

@@ -1,0 +1,111 @@
+dataset:
+  name: SemanticKITTI
+  dataset_path:  # path/to/your/dataset
+  cache_dir: ./logs/cache
+  # class_weights: [55437630, 320797, 541736, 2578735, 3274484, 552662, 184064,
+  #   78858, 240942562, 17294618, 170599734, 6369672, 230413074, 101130274,
+  #   476491114, 9833174, 129609852, 4506626, 1168181]
+  # test_result_folder: ./test
+  # test_split: ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21']
+  # training_split: ['00', '01', '02', '03', '04', '05', '06', '07', '09', '10']
+  # all_split: ['00', '01', '02', '03', '04', '05', '06', '07', '09',
+  # '08', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21']
+  # validation_split: ['08']
+  # use_cache: true
+  # class_weights: [1, 1]   # optional; can leave as-is
+  #class_weights: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] #19 classes
+  # class_weights: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] #19 classes
+  # in randlanet_semantickitti.yml, under dataset:
+  #Using log inverse frequency from gpt
+
+  # Power inverse-freq (normalized & clipped): [0.1, 0.203384, 0.817761, 0.563424, 0.406318, 1.345992, 0.275713, 0.53537, 1.546318, 0.400608, 2.089458, 1.04688, 2.768773]
+
+  # Median frequency (normalized & clipped): [0.1, 0.1, 0.421328, 0.200004, 0.104016, 1.141438, 0.1, 0.180583, 1.506485, 0.101113, 2.750644, 0.690495, 4.829939]
+
+  # Class-balanced (effective N) (normalized & clipped): [0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+  # ==================================
+  Paste this into YAML:
+  #class_weights: [0.1, 0.200051, 0.798093, 0.583315, 0.443707, 1.343993, 0.279292, 0.543721, 1.579877, 0.415648, 2.01724, 1.055356, 2.739707]
+  #class_weights: [0.1, 0.201246, 0.797202, 0.596176, 0.435344, 1.344291, 0.280245, 0.542261, 1.581127, 0.41417, 2.019792, 1.056575, 2.731571]
+  #class_weights: [0.1, 0.170829, 1.150168, 0.341278, 0.205587, 0.976971, 0.221331, 0.57949, 1.566066, 0.264996, 2.678164, 1.516073, 2.329047]
+  class_weights: [0.1, 0.221139, 1.131173, 1.054917, 2.046883, 0.729283, 1.157136, 0.27917, 1.987929, 0.533432, 0.726383, 0.709657, 1.1609, 0.972506, 1.738358, 0.551135]
+
+
+
+  test_result_folder: ./test
+  training_split: ["00", "01", "oversampled","oversampled2", "oversampled3"]
+  validation_split: ['val']
+  test_split: ['testfullpcd_oversample3_d2']
+  #test_split: ['testset3']
+  all_split: ["00", "01", "oversampled","oversampled2", "oversampled3", "testfullpcd_oversample3_d2", "val"]
+  use_cache: false
+
+  # training_split: ['tiny_train']
+  # validation_split: ['tiny_train']
+  # # test_split: ['validation']
+  #test_split: ['tinytrain']
+  # all_split: ['tiny_train']
+  # use_cache: false
+  
+  
+  sampler:
+    name: 'SemSegRandomSampler'
+    #name: 'SemSegSpatiallyRegularSampler' #for larger datasets
+model:
+  name: RandLANet
+  batcher: DefaultBatcher
+  ckpt_path: /home/jeremychia/Documents/Open3D-ML/logs/ckpt_00228.pth  # path/to/your/checkpoint
+  num_neighbors: 16
+  num_layers: 4 #was 3
+  ignored_label_inds: [] #[2,3,5,9,15,16,18]   # ignore unlabeled
+  num_points: 60000 #40000 #20000 #100000 #45056
+  num_classes: 16 #Note: do not include ignored classes #was 19
+  #ignored_label_inds: [0]
+  sub_sampling_ratio: [4, 4, 4,4] #according to number of layers
+  in_channels: 4
+  dim_features: 16 #originally 8
+  dim_output: [32, 128, 256, 256] #[16, 64, 128,256] #add 256 for 4 layers
+  grid_size: 0.04 #0.06
+  augment:
+    recenter:
+      dim: [0, 1]
+
+    rotate:
+      dim: [0, 1]
+      angle: 180
+
+    scale:
+      min: 0.95
+      max: 1.05
+
+    jitter:
+      sigma: 0.01
+      clip: 0.05
+  augment:
+    recenter:
+      dim: [0, 1]
+pipeline:
+  name: SemanticSegmentation
+  optimizer:
+    lr: 0.0005
+  batch_size: 8 #8 #was 4
+  main_log_dir: ./logs
+  max_epoch: 500
+  save_ckpt_freq: 2
+  scheduler_gamma: 0.994 #originally 0.9886
+  test_batch_size: 1
+  train_sum_dir: train_log
+  val_batch_size: 4
+  num_workers: 0 #added
+  summary:
+    record_for: []
+    max_pts:
+    use_reference: false
+    max_outputs: 0
+
+  # summary:
+  #   record_for: ["train", "val"]   # log both
+  #   max_pts: 0                     # don't need point vis now
+  #   max_outputs: 0                 # same
+  #   use_reference: false
