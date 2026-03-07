@@ -25,6 +25,13 @@ In brief, the pipeline is:
 - if performance is weak, adjust the dataset, configs, class weights, or model hyperparameters and retrain
 - once the results are acceptable, finalize the model and continue with deployment or downstream evaluation
 
+## Robot Platform
+
+The robot platform used to collect the real-world point cloud dataset for this workflow is shown below.
+It is the sensing platform used for data acquisition before dataset labeling, preprocessing, and semantic segmentation training.
+
+![Robot platform](images/RobotPlatform.png)
+
 For the detailed step-by-step workflow, use these documents after completing the device setup:
 
 - [`dataset_prep_readme.md`](dataset_prep_readme.md)

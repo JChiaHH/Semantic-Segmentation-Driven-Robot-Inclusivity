@@ -28,6 +28,37 @@ SEMKITTI_DATASET_ROOT=/path/to/Training
 S3DIS_DATASET_ROOT=/path/to/Training/dataset_s3dis/Stanford3dDataset_v1.2_Aligned_Version
 ```
 
+## Dataset Size Summary
+
+This workflow uses a combined dataset made up of real-world and synthetic point clouds.
+The dataset summary is:
+
+| Dataset Type | No. of Point Clouds | No. of Points | Overall Percentage |
+| --- | ---: | ---: | ---: |
+| Real World | 14 | 37,352,003 | 82.34% |
+| Synthetic | 10 | 8,005,974 | 17.66% |
+| Total | 24 | 45,357,977 | 100% |
+
+After oversampling, the training dataset contains `68,535,242` points.
+
+## Model Performance Summary
+
+The quantitative performance summary for the three models in this workflow is:
+
+| Model | Best Epoch | Training IoU | Training Accuracy | Validation IoU | Validation Accuracy |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| RandLA-Net | 250 | 0.6220 | 67.65% | 0.2657 | 36.35% |
+| KPConv | 399 | 0.7331 | 77.4% | 0.2509 | 37.89% |
+| PointTransformer | 185 | 0.5448 | 79.83% | 0.2081 | 38.78% |
+
+## Qualitative Inference Summary
+
+| Model | Training Set Inference | Generalization Inference |
+| --- | --- | --- |
+| RandLA-Net | Performs well on trained-set inference. | Difficult to generalize and prone to misclassification. |
+| KPConv | Segments points more precisely but is prone to under-classification. | Captures classes with good precision but remains prone to under-classification. |
+| PointTransformer | Correctly segments a larger number of points but still exhibits some misclassifications. | Demonstrates the strongest overall inference performance, detecting multiple classes accurately with minor misclassifications. |
+
 ## Important note about raw inference
 
 For raw, unseen SemanticKITTI-style scans, use `--split predict`.
