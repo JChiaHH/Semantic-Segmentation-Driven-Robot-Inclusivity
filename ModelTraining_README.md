@@ -28,6 +28,18 @@ SEMKITTI_DATASET_ROOT=/path/to/Training
 S3DIS_DATASET_ROOT=/path/to/Training/dataset_s3dis/Stanford3dDataset_v1.2_Aligned_Version
 ```
 
+## Important note about raw inference
+
+For raw, unseen SemanticKITTI-style scans, use `--split predict`.
+Do not use `--split test` on raw scans that do not have ground-truth `.label` files.
+
+In this project, that raw prediction workflow is project-specific:
+
+- [`open3d_modified_scripts/run_pipeline.py`](open3d_modified_scripts/run_pipeline.py) adds `--split predict`, `--predict_seq`, and the dedicated raw-sequence prediction branch.
+- [`open3d_modified_scripts/semantic_segmentation.py`](open3d_modified_scripts/semantic_segmentation.py) guards metric logging in `run_test()` when no ground-truth labels are available.
+- [`open3d_modified_scripts/semantickitti.py`](open3d_modified_scripts/semantickitti.py) returns zero labels when `.label` files are missing on the `test` split.
+- The custom `predict` branch also injects dummy zero labels before calling `run_inference()`, so inference can run without trying to evaluate accuracy on unlabeled raw scans.
+
 ## Monitoring workflow
 
 The original workflow in `README_Final.txt` used four terminals. That is still a practical setup:
@@ -121,7 +133,13 @@ python scripts/run_pipeline.py torch \
   --device_ids 0
 ```
 
-### A5. Predict on a held-out sequence
+### A5. Predict on a raw unseen sequence
+
+Use `--split predict` for raw unseen SemanticKITTI-style scans that do not have ground-truth `.label` files.
+
+Do not use `--split test` for that case.
+The custom `predict` CLI path is added in [`open3d_modified_scripts/run_pipeline.py`](open3d_modified_scripts/run_pipeline.py), not in `semantic_segmentation.py` alone.
+That patched workflow reads raw `.bin` scans from `dataset/sequences/<seq>/velodyne`, injects dummy zero labels, runs inference, and saves predictions without requiring accuracy or IoU computation against missing ground truth.
 
 Set `--ckpt_path` to the checkpoint you want to use and `--predict_seq` to the sequence name you want to predict.
 
@@ -188,6 +206,10 @@ tensorboard --logdir "$OPEN3D_ML_ROOT/train_log/00001_PointTransformer_S3DIS_tor
 
 ### B3. Test on an S3DIS test area
 
+For PointTransformer, this `--split test` command is also the inference command after a raw cloud has already been converted into S3DIS-style `Area_* / room_*` chunks.
+Do not try to run one full construction-site cloud directly through the model.
+Transformer inference is VRAM-heavy, and full-cloud inference can cause the GPU to run out of memory.
+
 The legacy workflow used `test_area_idx=3`.
 Adjust it to match the area you reserved during dataset preparation.
 
@@ -215,7 +237,18 @@ cd "$OPEN3D_ML_ROOT"
 tail -f logs/PointTransformer_S3DIS_torch/log_test_*.txt
 ```
 
-### B4. Predict on new `.ply` test clouds
+### B4. Prepare raw `.ply` clouds for PointTransformer inference
+
+For raw PointTransformer inference, you must first split the point cloud into S3DIS-style `Area_* / room_*` chunks before running the model.
+
+This chunking step is necessary.
+Transformer inference on a full construction-site point cloud can require too much VRAM and cause the GPU to run out of memory.
+In this project, the correct inference flow is:
+
+1. split the raw `.ply` cloud into `Area_* / room_*` chunks
+2. run the `PointTransformer` `--split test` command from B3 on that generated test area
+3. merge the chunk predictions back together with `merge_split_predictions_s3dis.py`
+4. convert the merged output back to `.ply`
 
 The legacy workflow used a `convert_ply_to_s3dis.py` helper before running `PointTransformer` testing on custom test clouds.
 That helper is referenced in `README_Final.txt`, but it is not included in this repository.
@@ -229,7 +262,7 @@ python convert_ply_to_s3dis.py \
   --test-area 3
 ```
 
-After conversion, run the `PointTransformer` test command above on that test area.
+After conversion, run the `PointTransformer` test command from B3, then continue with B5 and B6.
 
 ### B5. Merge split predictions after testing
 
