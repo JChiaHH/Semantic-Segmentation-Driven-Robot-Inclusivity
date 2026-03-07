@@ -5,6 +5,27 @@ No Docker is used in this workflow.
 
 Once you finish the device setup in this document, continue with [`dataset_prep_readme.md`](dataset_prep_readme.md) for dataset labeling, preprocessing, and training dataset preparation.
 
+## Semantic Segmentation Pipeline Overview
+
+The overall workflow in this project is shown below.
+It starts with dataset preparation, moves into model selection and training validation, and then loops through raw-data inference and fine-tuning until the model performs well on both labeled and unseen point clouds.
+
+![Semantic model training pipeline](images/Semantic Model Training Pipeline.drawio.png)
+
+In brief, the pipeline is:
+
+- prepare the dataset and split it into training, validation, and test sets
+- choose a semantic segmentation model: `KPConv`, `RandLA-Net`, or `PointTransformer`
+- modify the model config and hyperparameters, then train the selected model
+- run inference on trained-data and raw-data validation samples
+- if performance is weak, adjust the dataset, configs, class weights, or model hyperparameters and retrain
+- once the results are acceptable, finalize the model and continue with deployment or downstream evaluation
+
+For the detailed step-by-step workflow, use these documents after completing the device setup:
+
+- [`dataset_prep_readme.md`](dataset_prep_readme.md)
+- [`ModelTraining_README.md`](ModelTraining_README.md)
+
 ## Start here
 
 If you are using an `RTX 50xx` series GPU, build Open3D from source first.
