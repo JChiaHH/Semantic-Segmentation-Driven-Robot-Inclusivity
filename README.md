@@ -33,10 +33,9 @@ For the detailed step-by-step workflow, use these documents after completing the
 ## Training Classes
 
 In this workflow, the semantic segmentation models are trained on 16 classes with train IDs `0` to `15`.
-Refer to the resources below for the class taxonomy and the CloudCompare color reference used in this project:
+The class taxonomy is shown below, and the CloudCompare color reference used in this project is available in [`configs/color_scale.xml`](configs/color_scale.xml).
 
-- Class taxonomy overview: [`images/Classes.png`](images/Classes.png)
-- CloudCompare color scale: [`configs/color_scale.xml`](configs/color_scale.xml)
+![Training classes](images/Classes.png)
 
 Raw CloudCompare labels `2`, `16`, and `18` (`Drains/Canals`, `Debris and Loose Packaging`, and `Unclassified Items`) exist in the full label scale, but they are ignored in the final 16-class training mapping used by this project.
 
