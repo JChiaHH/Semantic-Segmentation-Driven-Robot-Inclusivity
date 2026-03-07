@@ -3,6 +3,8 @@
 This repository uses a conda-based Open3D and Open3D-ML setup.
 No Docker is used in this workflow.
 
+Once you finish the device setup in this document, continue with [`dataset_prep_readme.md`](dataset_prep_readme.md) for dataset labeling, preprocessing, and training dataset preparation.
+
 ## Start here
 
 If you are using an `RTX 50xx` series GPU, build Open3D from source first.

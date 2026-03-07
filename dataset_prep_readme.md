@@ -9,7 +9,6 @@ It covers:
 - SemanticKITTI-style preprocessing for `KPConv` and `RandLA-Net`
 - S3DIS-style preprocessing for `PointTransformer`
 - class-weight computation
-- exporting predictions back to `.ply`
 
 ## Before you start
 
@@ -31,10 +30,9 @@ Also note:
 - This README only documents the scripts that are actually present in `dataset_scripts`.
 - The old notes also mention `ply_to_semantic.py`, but that file is not in this repository. In this project workflow, you can start labeling directly from `.pcd` in CloudCompare, but the final labeled output must still be exported as `.ply` before running the dataset conversion scripts.
 
-## Stage 1. Label the dataset in CloudCompare
+## Label the dataset in CloudCompare
 
-Labeling is the first stage.
-Create the semantic labels in CloudCompare before running any of the dataset conversion scripts.
+Create the semantic labels in CloudCompare before running either dataset conversion path.
 
 ### Install CloudCompare
 
@@ -89,7 +87,7 @@ Recommended output from the labeling stage:
 - draft CloudCompare `.bin` project files
 - a saved CloudCompare XML color scale for the label scheme you used
 
-## Stage 2. Choose the target dataset format
+## Choose the target dataset format
 
 There are two dataset-preparation paths in this repository.
 
@@ -129,13 +127,10 @@ Main scripts:
 - [`oversampled_s3dis.py`](dataset_scripts/oversampled_s3dis.py)
 - [`compute_weights_pointtransformer.py`](dataset_scripts/compute_weights_pointtransformer.py)
 - [`check_s3dis.py`](dataset_scripts/check_s3dis.py)
-- [`merge_split_predictions_s3dis.py`](dataset_scripts/merge_split_predictions_s3dis.py)
-- [`npy_to_ply_s3dis.py`](dataset_scripts/npy_to_ply_s3dis.py)
-- [`finetune_weights_pointtransformer.py`](dataset_scripts/finetune_weights_pointtransformer.py)
 
-## Stage 3. SemanticKITTI-style dataset preparation
+## Option A. SemanticKITTI-style dataset preparation
 
-### 3.1 Compute recommended spatial split parameters
+### A1. Compute recommended spatial split parameters
 
 Use [`recommended_spatial_split_params.py`](dataset_scripts/recommended_spatial_split_params.py) first.
 
@@ -153,7 +148,7 @@ conda activate o3dml_cuda128
 python dataset_scripts/recommended_spatial_split_params.py
 ```
 
-### 3.2 Split labeled `.ply` clouds into SemanticKITTI frames
+### A2. Split labeled `.ply` clouds into SemanticKITTI frames
 
 Use [`spatial_grid_splitting.py`](dataset_scripts/spatial_grid_splitting.py).
 
@@ -187,7 +182,7 @@ conda activate o3dml_cuda128
 python dataset_scripts/spatial_grid_splitting.py
 ```
 
-### 3.3 Check the output labels
+### A3. Check the output labels
 
 Use [`check_label2.py`](dataset_scripts/check_label2.py) to inspect the class distribution of generated `.label` files.
 
@@ -198,7 +193,7 @@ conda activate o3dml_cuda128
 python dataset_scripts/check_label2.py
 ```
 
-### 3.4 Compute class weights for KPConv / RandLA-Net
+### A4. Compute class weights for KPConv / RandLA-Net
 
 Use [`compute_weights_ver4.py`](dataset_scripts/compute_weights_ver4.py).
 
@@ -221,34 +216,9 @@ conda activate o3dml_cuda128
 python dataset_scripts/compute_weights_ver4.py
 ```
 
-### 3.5 Export predictions back to `.ply`
+## Option B. S3DIS-style dataset preparation for PointTransformer
 
-After model inference, use [`export_predicted_ply_FINAL.py`](dataset_scripts/export_predicted_ply_FINAL.py) to convert predicted `.label` files back into `.ply` for CloudCompare.
-
-What it does:
-
-- reads `.bin` and `.label`
-- handles raw-label vs train-label interpretation
-- applies `learning_map_inv`
-- writes `.ply` fields for CloudCompare inspection
-
-Before running it, edit:
-
-- `BIN_DIR`
-- `LAB_DIR`
-- `OUT_DIR`
-- `LABEL_MODE`
-
-Run:
-
-```bash
-conda activate o3dml_cuda128
-python dataset_scripts/export_predicted_ply_FINAL.py
-```
-
-## Stage 4. S3DIS-style dataset preparation for PointTransformer
-
-### 4.1 Split labeled `.ply` clouds into S3DIS rooms
+### B1. Split labeled `.ply` clouds into S3DIS rooms
 
 Use [`spatial_grid_splitting_s3dis.py`](dataset_scripts/spatial_grid_splitting_s3dis.py).
 
@@ -291,7 +261,7 @@ Important:
 - Keep the dataset config aligned with the folders you create.
 - The modified `pointtransformer_s3dis.yml` in this repository already reflects the project-specific label definitions.
 
-### 4.2 Check the generated S3DIS rooms
+### B2. Check the generated S3DIS rooms
 
 Use [`check_s3dis.py`](dataset_scripts/check_s3dis.py) to inspect the per-class point counts in the generated S3DIS folders.
 
@@ -302,7 +272,7 @@ conda activate o3dml_cuda128
 python dataset_scripts/check_s3dis.py
 ```
 
-### 4.3 Oversample rare classes for PointTransformer
+### B3. Oversample rare classes for PointTransformer
 
 Use [`oversampled_s3dis.py`](dataset_scripts/oversampled_s3dis.py).
 
@@ -329,7 +299,7 @@ conda activate o3dml_cuda128
 python dataset_scripts/oversampled_s3dis.py
 ```
 
-### 4.4 Compute PointTransformer class weights
+### B4. Compute PointTransformer class weights
 
 Use [`compute_weights_pointtransformer.py`](dataset_scripts/compute_weights_pointtransformer.py).
 
@@ -345,53 +315,6 @@ Run:
 conda activate o3dml_cuda128
 python dataset_scripts/compute_weights_pointtransformer.py
 ```
-
-### 4.5 Merge split predictions after testing
-
-If PointTransformer testing produces chunked `.npy` predictions, merge them with [`merge_split_predictions_s3dis.py`](dataset_scripts/merge_split_predictions_s3dis.py).
-
-What it does:
-
-- reads chunk prediction `.npy` files
-- reads original chunk metadata `.npz`
-- reconstructs one merged prediction per original cloud
-
-Run:
-
-```bash
-conda activate o3dml_cuda128
-python dataset_scripts/merge_split_predictions_s3dis.py \
-  --pred-dir /path/to/predictions \
-  --meta-dir /path/to/original_pkl_meta \
-  --out-dir /path/to/merged
-```
-
-### 4.6 Convert merged predictions back to `.ply`
-
-Use [`npy_to_ply_s3dis.py`](dataset_scripts/npy_to_ply_s3dis.py).
-
-What it does:
-
-- reads merged `.npy` predictions
-- recovers raw labels through `LEARNING_MAP_INV`
-- applies the project color map
-- exports `.ply` for CloudCompare
-
-Run:
-
-```bash
-conda activate o3dml_cuda128
-python dataset_scripts/npy_to_ply_s3dis.py \
-  --pred-dir /path/to/merged_predictions \
-  --dataset-path /path/to/Stanford3dDataset_v1.2_Aligned_Version \
-  --out-dir /path/to/output_ply
-```
-
-### 4.7 Optional fine-tuning of PointTransformer loss weights
-
-Use [`finetune_weights_pointtransformer.py`](dataset_scripts/finetune_weights_pointtransformer.py) if you want to experiment with alternative class-weight scaling after the first training run.
-
-This is optional and comes after the base dataset is already prepared.
 
 ## Recommended end state before training
 
@@ -410,7 +333,17 @@ For S3DIS-style training:
 - class counts have been pasted into `pointtransformer_s3dis.yml`
 - optional oversampled rooms have been generated
 
+## Next step
+
+Once your dataset is ready, continue with [`ModelTraining_README.md`](ModelTraining_README.md) for:
+
+- training commands
+- TensorBoard monitoring
+- testing and prediction commands
+- exporting model outputs back to `.ply`
+- optional PointTransformer fine-tuning
+
 ## Related files
 
-- Device / environment setup: [`Device_Setup_README.md`](Device_Setup_README.md)
+- Device / environment setup: [`README.md`](README.md)
 - Legacy notes used as background: [`dataset_scripts/README_Final.txt`](dataset_scripts/README_Final.txt)
