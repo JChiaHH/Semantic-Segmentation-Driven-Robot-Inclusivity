@@ -59,6 +59,10 @@ The quantitative performance summary for the three models in this workflow is:
 | KPConv | Segments points more precisely but is prone to under-classification. | Captures classes with good precision but remains prone to under-classification. |
 | PointTransformer | Correctly segments a larger number of points but still exhibits some misclassifications. | Demonstrates the strongest overall inference performance, detecting multiple classes accurately with minor misclassifications. |
 
+These results should be interpreted with the practical constraints of this project in mind.
+Because access to construction sites is difficult, logistically constrained, safety-limited, and time-intensive, the current model performance may not yet be ideal for a task of this complexity.
+That said, this workflow is scalable and can be improved further with an expanded dataset, whether through more synthetic data, more real-world data, or both.
+
 ## Important note about raw inference
 
 For raw, unseen SemanticKITTI-style scans, use `--split predict`.
