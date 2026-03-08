@@ -75,11 +75,13 @@ Use the project-tree layout in your reference screenshot as the target structure
 - a `MergedClasses` folder containing the merged class clouds
 - one final merged point cloud at the end
 
-Example CloudCompare project layout:
+Example CloudCompare project layout reference:
 
-![Labelled point cloud example](images/LabelledPCD_Example.png)
+- [`LabelledPCD_Example.png`](images/LabelledPCD_Example.png)
 
-This repository already includes [`dataset_scripts/color_scale.xml`](dataset_scripts/color_scale.xml), which you can reuse as the base CloudCompare color scale if it matches your label set.
+Use the linked image as a reference for how the CloudCompare project tree should look after grouping, merging, and exporting the labeled point cloud.
+
+This repository already includes [`configs/color_scale.xml`](configs/color_scale.xml), which you can reuse as the base CloudCompare color scale if it matches your label set.
 
 Recommended output from the labeling stage:
 
@@ -335,7 +337,9 @@ For S3DIS-style training:
 
 ## Next step
 
-Once your dataset is ready, continue with [`ModelTraining_README.md`](ModelTraining_README.md) for:
+Once your dataset is ready, continue with [`ModelTraining_README.md`](ModelTraining_README.md) for commands and with [`ModelResults_README.md`](ModelResults_README.md) for benchmark tables and qualitative examples.
+
+[`ModelTraining_README.md`](ModelTraining_README.md) covers:
 
 - training commands
 - TensorBoard monitoring
@@ -346,4 +350,6 @@ Once your dataset is ready, continue with [`ModelTraining_README.md`](ModelTrain
 ## Related files
 
 - Device / environment setup: [`README.md`](README.md)
+- Training and inference commands: [`ModelTraining_README.md`](ModelTraining_README.md)
+- Results and example outputs: [`ModelResults_README.md`](ModelResults_README.md)
 - Legacy notes used as background: [`dataset_scripts/README_Final.txt`](dataset_scripts/README_Final.txt)
