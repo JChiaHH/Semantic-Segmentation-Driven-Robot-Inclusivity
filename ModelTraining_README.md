@@ -342,3 +342,8 @@ For PointTransformer:
 - Dataset preparation: [`dataset_prep_readme.md`](dataset_prep_readme.md)
 - Results and example outputs: [`ModelResults_README.md`](ModelResults_README.md)
 - Legacy training note: [`dataset_scripts/README_Final.txt`](dataset_scripts/README_Final.txt)
+
+## References
+
+- RII Pipeline: [`rii_pipeline/README.md`](rii_pipeline/README.md)
+- Handheld LiDAR LIOSAM: [https://github.com/JChiaHH/Handheld_Lidar_LIOSAM](https://github.com/JChiaHH/Handheld_Lidar_LIOSAM)

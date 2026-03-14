@@ -75,3 +75,8 @@ Generalization example:
 - Device / environment setup: [`README.md`](README.md)
 - Dataset preparation: [`dataset_prep_readme.md`](dataset_prep_readme.md)
 - Training and inference commands: [`ModelTraining_README.md`](ModelTraining_README.md)
+
+## References
+
+- RII Pipeline: [`rii_pipeline/README.md`](rii_pipeline/README.md)
+- Handheld LiDAR LIOSAM: [https://github.com/JChiaHH/Handheld_Lidar_LIOSAM](https://github.com/JChiaHH/Handheld_Lidar_LIOSAM)

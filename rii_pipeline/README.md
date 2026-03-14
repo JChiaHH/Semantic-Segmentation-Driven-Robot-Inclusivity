@@ -306,3 +306,10 @@ Three map layers are generated from the point cloud:
 - Numba (optional, for fast raycasting in RII Vertical)
 - SciPy (optional, for connected-component labelling in Surface Continuity)
 - ROS 2 (Jazzy / Humble / Iron / Rolling) for map generation workers
+
+## References
+
+- Dataset preparation: [`../dataset_prep_readme.md`](../dataset_prep_readme.md)
+- Model training and inference: [`../ModelTraining_README.md`](../ModelTraining_README.md)
+- Model results and examples: [`../ModelResults_README.md`](../ModelResults_README.md)
+- Handheld LiDAR LIOSAM: [https://github.com/JChiaHH/Handheld_Lidar_LIOSAM](https://github.com/JChiaHH/Handheld_Lidar_LIOSAM)

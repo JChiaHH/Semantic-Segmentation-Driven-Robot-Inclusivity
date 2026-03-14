@@ -353,3 +353,8 @@ Once your dataset is ready, continue with [`ModelTraining_README.md`](ModelTrain
 - Training and inference commands: [`ModelTraining_README.md`](ModelTraining_README.md)
 - Results and example outputs: [`ModelResults_README.md`](ModelResults_README.md)
 - Legacy notes used as background: [`dataset_scripts/README_Final.txt`](dataset_scripts/README_Final.txt)
+
+## References
+
+- RII Pipeline: [`rii_pipeline/README.md`](rii_pipeline/README.md)
+- Handheld LiDAR LIOSAM: [https://github.com/JChiaHH/Handheld_Lidar_LIOSAM](https://github.com/JChiaHH/Handheld_Lidar_LIOSAM)
