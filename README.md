@@ -444,6 +444,8 @@ python "$OPEN3D_ML_ROOT/scripts/run_pipeline.py" torch \
 - NVIDIA CUDA GPU compute capability table: https://developer.nvidia.com/cuda-gpus
 - Open3D build from source documentation: https://www.open3d.org/docs/release/compilation.html
 - Open3D-ML installation notes: https://github.com/isl-org/Open3D-ML#installation
+- RII Pipeline: [`rii_pipeline/README.md`](rii_pipeline/README.md)
+- Handheld LiDAR LIOSAM: [https://github.com/JChiaHH/Handheld_Lidar_LIOSAM](https://github.com/JChiaHH/Handheld_Lidar_LIOSAM)
 
 ## Next Step
 
