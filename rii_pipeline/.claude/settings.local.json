@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(colcon build --packages-select pcd_package)",
+      "Bash(python3 -c \"import open3d; print\\(''open3d OK:'', open3d.__version__\\)\")",
+      "Bash(pip install open3d)",
+      "Bash(python3 -c \"import py_compile; py_compile.compile\\(''rii_pipeline.py'', doraise=True\\)\")"
+    ]
+  }
+}
